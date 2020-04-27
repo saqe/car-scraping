@@ -1,12 +1,12 @@
 import requests as re
 from bs4 import BeautifulSoup
-from MyDateTime import MyDateTime
+from MyDateTime import DatetimeUtil
 import time
 import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-date=MyDateTime()
+date=DatetimeUtil()
 
 class Scraper:
     def __init__(self,):
@@ -89,7 +89,7 @@ class Scraper:
         footer=carParser.find('div',class_='box-footer')
         dataDict['MODIFCATION_TIME_SITE']=footer.find('div',class_='uk-float-right').text.strip().split('  ')[0].replace('MODIFICAT:','').strip()
 
-        dataDict['FIRST_APPEARED']=date.getDate()
+        dataDict['FIRST_APPEARED']=date.getFormatedDate()
         dataDict['IS_AVAILABLE']='Yes'
 
         #remove extra Tags from description

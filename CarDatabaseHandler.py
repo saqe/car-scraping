@@ -1,9 +1,10 @@
 from MySQLDBHandler import MySQLDBHandler
-from datetime import datetime
+from MyDateTime import DatetimeUtil
 import logging
 
 logger = logging.getLogger(__name__+'.log')
 logging.basicConfig(level=logging.WARNING,format='%(asctime)-15s %(clientip)s %(user)-8s %(message)s')
+date=DatetimeUtil()
 class CarDatabaseHandler:    
     def __init__(self,host,user,passwd,database):
         super().__init__()
@@ -37,13 +38,12 @@ class CarDatabaseHandler:
         logger.info("Data added inside TrackChanges",ref_no,change_type,value)
 
     def putCarAvailablityDown(self,ref_num)-> bool:
-        current_date = datetime.now().strftime("%Y-%m-%d")
         # Change Status and Last removed value too
-        self.updateDatabaseValueForRefNo(self,ref_num=ref_num,key='IS_AVAILABLE',value='No',is_track_required=True)
-        self.updateDatabaseValueForRefNo(self,ref_num=ref_num,key='LAST_REMOVED',value=current_date)
+        self.updateDatabaseValueForRefNo(ref_num=ref_num,key='IS_AVAILABLE',value='No',is_track_required=True)
+        self.updateDatabaseValueForRefNo(ref_num=ref_num,key='LAST_REMOVED',value=date.getFormatedDate())
     
     def putCarAvailablityUP(self,ref_num)-> bool:
-        self.updateDatabaseValueForRefNo(self,ref_num=ref_num,key='IS_AVAILABLE',value='Yes',is_track_required=True)
+        self.updateDatabaseValueForRefNo(ref_num,key='IS_AVAILABLE',value='Yes',is_track_required=True)
 
     def updateDatabaseValueForRefNo(self,ref_num,key,value,is_track_required=False):
         SQL_UPDATE_DATA_QUERY='UPDATE cars SET {key} = "{value}" WHERE REF_NO = {ref_no};'.format(key=key,value=value,ref_no=ref_num)

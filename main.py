@@ -62,7 +62,7 @@ for page_number in range(1,115):
                 print(ref_no," is up again")
                 cars_db.putCarAvailablityUP(ref_no)
                 logger.info(str(ref_no)+' is available again, Refreshing Values in database')
-                # dataDict=scraper.scrape_car_profile_information(dataDict)
+                dataDict=scraper.scrape_car_profile_information(dataDict)
             cars_db.update_already_exists_car_values(dataDict)
             continue
         dataDict=scraper.scrape_car_profile_information(dataDict)
