@@ -18,6 +18,10 @@ class MySQLDBHandler:
     def query(self,sql_query) -> None:
         self.db_cursor.execute(sql_query)
 
+    def insert_qeury(self,sql_query) -> None:
+        self.db_cursor.execute(sql_query)
+        self.db_connection.commit()
+
     def fetch_many(self,sql_query) -> list:
         self.db_cursor.execute(sql_query)
         return self.db_cursor.fetchall()
