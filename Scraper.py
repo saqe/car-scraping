@@ -27,7 +27,7 @@ class Scraper:
                     logger.warning("For page#{} STATUS CODE : {}".format(page_number,page.status_code))
             except re.exceptions.ConnectionError as error:
                 time.sleep(23)
-                logger.error('MAIN URL Connection Error, Trying Again ',error)
+                logger.exception('MAIN URL Connection Error, Trying Again')
             finally:
                 # Scraping done smoothly break the loop
                 break
@@ -62,7 +62,7 @@ class Scraper:
                     logger.warning("For page:{} STATUS CODE : {}".format(link,carPage.status_code))
             except re.exceptions.ConnectionError as error:
                 logger.info(dataDict['URL_LINK'])
-                logger.warning('Connection Error, Trying Again',error)
+                logger.exception('Connection Error, Trying Again')
                 continue
             finally:
                 break
@@ -84,8 +84,8 @@ class Scraper:
         
         profile_page_ref_no=carParser.find('div',class_='uk-float-right uk-width-1-2').text.replace('REF:','').strip()
         if profile_page_ref_no != dataDict['REF_NO']:
-            logger.error("CRITICAL ERROR - REF # doesn't match. search:{} & profile:{}".format(profile_page_ref_no,dataDict['REF_NO']),error)
-
+            logger.exception("CRITICAL ERROR - REF # doesn't match. search:{} & profile:{}".format(profile_page_ref_no,dataDict['REF_NO']),error)
+            
         dataDict['REF_NO']=profile_page_ref_no
         footer=carParser.find('div',class_='box-footer')
         dataDict['MODIFCATION_TIME_SITE']=footer.find('div',class_='uk-float-right').text.strip().split('  ')[0].replace('MODIFICAT:','').strip()

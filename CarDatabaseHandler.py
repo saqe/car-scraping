@@ -52,8 +52,7 @@ class CarDatabaseHandler:
 
         try:        self.db.query(SQL_UPDATE_DATA_QUERY)
         except Exception as error:     
-            logger.error('@changeCarDatabaseValue UPDATE Car => {} '.format(SQL_UPDATE_DATA_QUERY),error)
-            input()
+            logger.exception('@changeCarDatabaseValue UPDATE Car => {} '.format(SQL_UPDATE_DATA_QUERY),error)
 
         if is_track_required:                   self.logRefChanges(ref_num,key,value)
         if key not in ['FAVORITS','Visits']:    logger.info('{ref_num} is UPDATED for key:{key} and value:{value}'.format(ref_num=ref_num,key=key,value=value))
@@ -85,7 +84,7 @@ class CarDatabaseHandler:
             self.db.insert_qeury(SQL_INSERT_QUERY)
         except Exception as error:
             print(type(error))
-            logger.error('SQL QUERY Error @writeNewCarRow ',error)
+            logger.exception('SQL QUERY Error @writeNewCarRow ')
             # logger.info(SQL_INSERT_QUERY)
         finally:
             logger.info("{} is inserted".format(str(ref_num)))
