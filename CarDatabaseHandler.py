@@ -76,7 +76,7 @@ class CarDatabaseHandler:
 
     def insert_new_car(self,rowDict):
         ref_num=rowDict['REF_NO']
-        logger.info("{ref_num} New car is being added",format(ref_num=ref_num))
+        logger.info("{ref_num} New car is being added".format(ref_num=ref_num))
         for key,value in rowDict.items():rowDict[key]='"'+value.replace('"','')+'"'
         SQL_INSERT_QUERY='INSERT INTO cars( %s ) VALUES ( %s );' % (', '.join(rowDict.keys()),', '.join(rowDict.values()))
         try:
