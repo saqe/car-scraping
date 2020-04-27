@@ -31,7 +31,8 @@ class CarDatabaseHandler:
     def get_db_value(self,ref_no,key) -> str:           return str(self.db.fetch_one("SELECT {key} FROM cars where REF_NO={ref_no};".format(key=key,ref_no=ref_no))[0])
     
     def is_database_value_match(self,ref_num,key,value):
-        return self.get_db_value(ref_num,key)==value
+        db_value=self.get_db_value(ref_num,key)
+        return db_value==value,db_value
 
     def logRefChanges(self,ref_no,change_type,value):
         TRACK_SQL_INSERT_QUERY="INSERT INTO TrackChanges ( car_ref_id , change_type , change_value ) VALUES ( {},'{}','{}');".format(ref_no,change_type,value)
@@ -62,16 +63,18 @@ class CarDatabaseHandler:
         ref_num=dataDict['REF_NO']
         for key in ['FAVORITS','Visits','Price','Premium','Preu_Ara','Preu_Abans']:
             if key not in dataDict.keys():
-                logger.info(str(key)+" was used as a key inside @update_already_exists_car_values")
+                # logger.info(str(key)+" was used as a key inside @update_already_exists_car_values")
                 continue
             value=str(dataDict[key])
 
             # Check if its the key is already same, don't track the changes
-            if not self.is_database_value_match(ref_num,key,value):
+            is_db_value_match,db_value=self.is_database_value_match(ref_num,key,value)
+            
+            if not is_db_value_match:
                 self.updateDatabaseValueForRefNo(ref_num,key,value)
             
             if key not in ['FAVORITS','Visits']: 
-                logger.info('For REF# {ref_num} is changed for <{key}> to {value}'.format(ref_num=ref_num,key=key,value=value))
+                logger.info('For REF# {ref_num} is changed for <{key}>, {db_value} changed to <{value}>'.format(ref_num=ref_num,key=key,db_value=db_value,value=value))
             
 
     def insert_new_car(self,rowDict):
