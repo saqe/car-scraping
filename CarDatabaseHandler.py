@@ -37,7 +37,7 @@ class CarDatabaseHandler:
     def logRefChanges(self,ref_no,change_type,value):
         TRACK_SQL_INSERT_QUERY="INSERT INTO TrackChanges ( car_ref_id , change_type , change_value ) VALUES ( {},'{}','{}');".format(ref_no,change_type,value)
         self.db.query(TRACK_SQL_INSERT_QUERY)
-        logger.info("Data added inside TrackChanges",ref_no,change_type,value)
+        logger.info("Data added inside TrackChanges Ref#{} - {}:{}".format(ref_no,change_type,value))
 
     def putCarAvailablityDown(self,ref_num)-> bool:
         # Change Status and Last removed value too
@@ -72,9 +72,8 @@ class CarDatabaseHandler:
             
             if not is_db_value_match:
                 self.updateDatabaseValueForRefNo(ref_num,key,value)
-            
-            if key not in ['FAVORITS','Visits']: 
-                logger.info('For REF# {ref_num} is changed for <{key}>, {db_value} changed to <{value}>'.format(ref_num=ref_num,key=key,db_value=db_value,value=value))
+                if key not in ['FAVORITS','Visits']: 
+                    logger.info('For REF# {ref_num} is changed for <{key}>, {db_value} changed to <{value}>'.format(ref_num=ref_num,key=key,db_value=db_value,value=value))
             
 
     def insert_new_car(self,rowDict):
@@ -87,8 +86,8 @@ class CarDatabaseHandler:
         except Exception as error:
             print(type(error))
             logger.error('SQL QUERY Error @writeNewCarRow ',error)
-            logger.info(SQL_INSERT_QUERY)
+            # logger.info(SQL_INSERT_QUERY)
         finally:
-            logger.info(str(rowDict['REF_NO'])+"{} is inserted")
+            logger.info("{} is inserted".format(str(ref_num)))
             for key in ['Price']:
                 self.logRefChanges(ref_no=ref_num, change_type=key , value = rowDict[key])
