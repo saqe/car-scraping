@@ -98,5 +98,5 @@ class Scraper:
         dataDict['Description']=carParser.find('div',class_='uk-block').text.strip().replace('"','\'')
         if 'Quilometres' in dataDict:
             dataDict['Quilometres']=int(dataDict['Quilometres'].replace('Km.','').strip())
-            
+
         return dataDict

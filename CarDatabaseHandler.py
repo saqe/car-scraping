@@ -1,6 +1,7 @@
 from MySQLDBHandler import MySQLDBHandler
 from MyDateTime import DatetimeUtil
 import logging
+import traceback
 
 logging.basicConfig(filename=__name__+'.log', filemode='a', format='%(asctime)s %(levelname)-8s %(message)s',level=logging.INFO)
 logger = logging.getLogger()
@@ -84,9 +85,8 @@ class CarDatabaseHandler:
             self.db.insert_qeury(SQL_INSERT_QUERY)
         except Exception as error:
             print(type(error))
-            print(SQL_INSERT_QUERY)
+            traceback.print_exc()
             logger.exception('SQL QUERY Error @writeNewCarRow ')
-            # logger.info(SQL_INSERT_QUERY)
         finally:
             logger.info("{} is inserted".format(str(ref_num)))
             for key in ['Price']:
