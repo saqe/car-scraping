@@ -75,17 +75,17 @@ class CarDatabaseHandler:
             
 
     def insert_new_car(self,rowDict):
-        print("New Car received")
-        # for key,value in rowDict.items():rowDict[key]='"'+value.replace('"','')+'"'
-        # SQL_INSERT_QUERY='INSERT INTO cars( %s ) VALUES ( %s );' % (', '.join(rowDict.keys()),', '.join(rowDict.values()))
-        # try:
-        
-        # except :
-        #     logger.error('SQL QUERY Error @writeNewCarRow')
-        #     logger.info(SQL_INSERT_QUERY)
-        #     print(SQL_INSERT_QUERY)
-        # mydb.commit()
-        # # Track changes of newly added cars too.
-        # for key in ['Price']:
-        #     trackChanges(rowDict['REF_NO'],key,rowDict[key],is_new=True)
-        # logger.info(str(rowDict['REF_NO'])+" is inserted")
+        ref_num=rowDict['REF_NO']
+        logger.info("{ref_num} New car is being added",format(ref_num=ref_num))
+        for key,value in rowDict.items():rowDict[key]='"'+value.replace('"','')+'"'
+        SQL_INSERT_QUERY='INSERT INTO cars( %s ) VALUES ( %s );' % (', '.join(rowDict.keys()),', '.join(rowDict.values()))
+        try:
+            self.db.insert_qeury(SQL_INSERT_QUERY)
+        except Exception as error:
+            print(type(error))
+            logger.error('SQL QUERY Error @writeNewCarRow ',error)
+            logger.info(SQL_INSERT_QUERY)
+        finally:
+            logger.info(str(rowDict['REF_NO'])+"{} is inserted")
+            for key in ['Price']:
+                self.logRefChanges(ref_no=ref_num, change_type=key , value = rowDict[key])
