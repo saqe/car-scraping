@@ -14,7 +14,7 @@ REQUEST_HEADER={
   'pragma': 'no-cache',
   'upgrade-insecure-requests': '1',
   'Host': os.getenv('REQUEST_HOST'),
-#   'Cookie':os.getenv('REQUEST_COOKIES'),
+  'Cookie':os.getenv('REQUEST_COOKIES'),
   'user-agent': os.getenv('REQUEST_USER_AGENT')
 }
 
@@ -56,16 +56,14 @@ for page_number in range(1,115):
         ref_no=int(dataDict['REF_NO'])
         set_of_car_available_today.add(ref_no)
 
-        if cars_db.is_ref_no_exists(ref_no):
+        if cars_db.is_ref_num_exist(ref_no):
             #If REF_NO Exists but the availbility status was DOWN.
             if cars_db.is_ref_num_not_available(ref_no):
                 print(ref_no," is up again")
                 cars_db.putCarAvailablityUP(ref_no)
                 logger.info(str(ref_no)+' is available again, Refreshing Values in database')
-                dataDict=scraper.scrape_car_profile_information(dataDict)
-            
-        # updatePreExistData(dataDict)
-        # continue
-        # dataDict=extractCarInformation(dataDict)
-        # writeNewCarRow(dataDict)
-
+                # dataDict=scraper.scrape_car_profile_information(dataDict)
+            cars_db.update_already_exists_car_values(dataDict)
+            continue
+        dataDict=scraper.scrape_car_profile_information(dataDict)
+        cars_db.insert_new_car()

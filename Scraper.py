@@ -33,7 +33,6 @@ class Scraper:
         pageParser=BeautifulSoup(page.content,'html.parser')
         return pageParser.find('div',class_='aparador').find('ul',recursive=False).findAll('li',recursive=False)
 
-
     def scrape_car_detail_from_search_result(self,row) -> dict:
         dataDict={}
         dataDict['Title']=row.find('div',class_='box-titol').text.strip()
