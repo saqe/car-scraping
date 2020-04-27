@@ -4,8 +4,6 @@ import os
 import logging
 from dotenv import load_dotenv
 load_dotenv()
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 REQUEST_HEADER={
   'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
@@ -48,6 +46,10 @@ scraper.set_dict_value_change(CHANGE_VALUE_DICT)
 
 set_of_car_available_today=set()
 
+logging.basicConfig(filename=__name__+'.log', filemode='a', format='%(asctime)s %(levelname)-8s %(message)s',level=logging.INFO)
+logger = logging.getLogger()
+
+
 for page_number in range(1,115):
     print(page_number)
     list_of_cars=scraper.scrape_cars_list(page_number)
@@ -66,4 +68,4 @@ for page_number in range(1,115):
             cars_db.update_already_exists_car_values(dataDict)
             continue
         dataDict=scraper.scrape_car_profile_information(dataDict)
-        cars_db.insert_new_car()
+        cars_db.insert_new_car(dataDict)

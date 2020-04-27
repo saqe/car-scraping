@@ -3,9 +3,10 @@ from bs4 import BeautifulSoup
 from MyDateTime import DatetimeUtil
 import time
 import logging
+# 'Logs/'+
+logging.basicConfig(filename=__name__+'.log', filemode='a', format='%(asctime)s %(levelname)-8s %(message)s',level=logging.INFO)
+logger = logging.getLogger()
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 date=DatetimeUtil()
 
 class Scraper:

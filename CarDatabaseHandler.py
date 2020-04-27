@@ -2,8 +2,9 @@ from MySQLDBHandler import MySQLDBHandler
 from MyDateTime import DatetimeUtil
 import logging
 
-logger = logging.getLogger(__name__+'.log')
-logging.basicConfig(level=logging.WARNING,format='%(asctime)-15s %(clientip)s %(user)-8s %(message)s')
+logging.basicConfig(filename=__name__+'.log', filemode='a', format='%(asctime)s %(levelname)-8s %(message)s',level=logging.INFO)
+logger = logging.getLogger()
+
 date=DatetimeUtil()
 class CarDatabaseHandler:    
     def __init__(self,host,user,passwd,database):
