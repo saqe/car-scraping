@@ -84,6 +84,7 @@ class CarDatabaseHandler:
             self.db.insert_qeury(SQL_INSERT_QUERY)
         except Exception as error:
             print(type(error))
+            print(SQL_INSERT_QUERY)
             logger.exception('SQL QUERY Error @writeNewCarRow ')
             # logger.info(SQL_INSERT_QUERY)
         finally:
