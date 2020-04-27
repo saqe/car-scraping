@@ -97,6 +97,6 @@ class Scraper:
         # [tag.extract() for tag in carParser.find('div',class_='uk-block').findAll(['h2','span','p','em'],recursive=False)]
         dataDict['Description']=carParser.find('div',class_='uk-block').text.strip().replace('"','\'')
         if 'Quilometres' in dataDict:
-            dataDict['Quilometres']=int(dataDict['Quilometres'].replace('Km.','').strip())
+            dataDict['Quilometres']=int(dataDict['Quilometres'].replace('Km.','').replace('.',',').strip())
 
         return dataDict
